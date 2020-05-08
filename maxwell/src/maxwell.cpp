@@ -53,49 +53,24 @@ void Maxwell::initData() {
 void Maxwell::rhs(const Grid &grid, double **u, double **dtu) {
 
 
+    unsigned int nb = domain->getGhostPoints();
     double dx = grid.getSpacing();
     int nx = grid.getSize();
 
-    dtu[U_EY][0] = - (u[U_BZ][1] - u[U_BZ][0]) / (dx);
-    dtu[U_BZ][0] = - (u[U_EY][1] - u[U_EY][0]) / (dx);
+    // Left boundary condition, needs to be integrated in time
+    dtu[U_EY][nb] =  (u[U_EY][nb+1] - u[U_EY][nb]) / (dx);
+    dtu[U_BZ][nb] =  (u[U_BZ][nb+1] - u[U_BZ][nb]) / (dx);
 
-    for (unsigned int i = 1; i < nx-1 ; i++) {
+    // Center of the grid
+    for (unsigned int i = nb+1; i < nx-1-nb ; i++) {
         dtu[U_EY][i] = - (u[U_BZ][i+1] - u[U_BZ][i-1]) / (2.0*dx);
         dtu[U_BZ][i] = - (u[U_EY][i+1] - u[U_EY][i-1]) / (2.0*dx);
     }
 
-    dtu[U_EY][nx-1] = - (u[U_BZ][nx-1] - u[U_BZ][nx-2]) / (dx);
-    dtu[U_BZ][nx-1] = - (u[U_EY][nx-1] - u[U_EY][nx-2]) / (dx);
+    // Right boundary condition, needs to be integrated in time
+    dtu[U_EY][nx-1-nb] = - (u[U_EY][nx-1-nb] - u[U_EY][nx-2-nb]) / (dx);
+    dtu[U_BZ][nx-1-nb] = - (u[U_BZ][nx-1-nb] - u[U_BZ][nx-2-nb]) / (dx);
 
 }
 
-void Maxwell::applyBoundaries(bool intermediate)
-{
-    unsigned int nb = domain->getGhostPoints();
-
-    auto left_it = data.begin();
-    auto right_it = --data.end();
-
-    double **left;
-    double **right;
-
-    if (!intermediate) {
-        left = left_it->getData();
-        right = right_it->getData();
-    }
-    else {
-        left = left_it->getIntermediateData();
-        right = right_it->getIntermediateData();
-    }
-
-    unsigned int nr = right_it->getGrid().getSize();
-    double dx = right_it->getGrid().getSpacing();
-
-    left[U_EY][nb] = (left[U_EY][nb+1] - left[U_EY][nb]) / dx;
-    left[U_BZ][nb] = (left[U_BZ][nb+1] - left[U_BZ][nb]) / dx;
-
-    right[U_EY][nr-1-nb] = - (right[U_EY][nr-1-nb] - right[U_EY][nr-1-nb-1])/dx;
-    right[U_BZ][nr-1-nb] = - (right[U_BZ][nr-1-nb] - right[U_BZ][nr-1-nb-1])/dx;
-
-}
 

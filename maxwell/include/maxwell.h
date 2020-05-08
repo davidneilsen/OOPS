@@ -10,7 +10,7 @@ class Maxwell : public ODE {
         static const unsigned int U_BZ = 1;
 
     protected:
-        virtual void applyBoundaries(bool intermediate);
+//      virtual void applyBoundaries(bool intermediate);
         virtual void rhs(const Grid &grid, double **u, double **dtu);
 
     public:
