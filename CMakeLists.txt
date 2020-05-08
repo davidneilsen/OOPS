@@ -133,3 +133,21 @@ add_executable(Fluid ${SOURCE_FILES})
 target_link_libraries(Fluid ${EXTRA_LIBS})
 target_include_directories(Fluid PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
                            ${CMAKE_CURRENT_SOURCE_DIR}/fluid/include ${PROJECT_SOURCE_DIR})
+
+
+set(MAXWELL_INCLUDE_FILES
+    maxwell/include/maxwell.h
+    maxwell/include/maxwellparser.h
+   )
+
+set(MAXWELL_SOURCE_FILES
+    maxwell/src/maxwell.cpp
+    maxwell/src/main.cpp
+    maxwell/src/maxwellparser.cpp
+   )
+
+set(SOURCE_FILES ${GRID_SOURCE_FILES} ${GRID_INCLUDE_FILES} ${MAXWELL_SOURCE_FILES} ${MAXWELL_INCLUDE_FILES})
+add_executable(Maxwell ${SOURCE_FILES})
+target_link_libraries(Maxwell ${EXTRA_LIBS})
+target_include_directories(Maxwell PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/maxwell/include ${PROJECT_SOURCE_DIR})
