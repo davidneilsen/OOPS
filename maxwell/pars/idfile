@@ -1,0 +1,4 @@
+[Maxwell]
+xmin = -1.0
+xmax =  1.0
+npoints =  51
