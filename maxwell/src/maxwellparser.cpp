@@ -69,6 +69,26 @@ void MaxwellParser::updateParameters(string fname, Parameters* params){
     }
   }
 
+  if(reader.hasParameter(string("Maxwell"),string("output_frequency"))){
+    int result = reader.readAsInt(string("Maxwell"),string("output_frequency"));
+    if(result <= 1000000 && result >= 1){
+      pars->setoutput_frequency(result);
+    }
+    else{
+      cout << "Parameter %s out of range.\n";
+    }
+  }
+
+  if(reader.hasParameter(string("Maxwell"),string("id_gauss_amp"))){
+    double result = reader.readAsDouble(string("Maxwell"),string("id_gauss_amp"));
+    if(result <= 1.000000e+01 && result >= 0.000000e+00){
+      pars->setid_gauss_amp(result);
+    }
+    else{
+      cout << "Parameter %s out of range.\n";
+    }
+  }
+
   if(reader.hasParameter(string("Maxwell"),string("id_gauss_center"))){
     double result = reader.readAsDouble(string("Maxwell"),string("id_gauss_center"));
     if(result <= 1.000000e+03 && result >= -1.000000e+03){

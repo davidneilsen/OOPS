@@ -11,6 +11,8 @@ class MaxwellParameters : public Parameters {
       mxmax = 1.0;
       mtmax = 1.0;
       mcfl = 1.0;
+      moutput_frequency = 1;
+      mid_gauss_amp = 1.0;
       mid_gauss_center = 0.0;
       mid_gauss_width = 1.0;
       mKOSigma = 0.0;
@@ -56,6 +58,22 @@ class MaxwellParameters : public Parameters {
       return mcfl;
     }
 
+    inline void setoutput_frequency(int output_frequency){
+      moutput_frequency = output_frequency;
+    }
+
+    inline int getoutput_frequency(){
+      return moutput_frequency;
+    }
+
+    inline void setid_gauss_amp(double id_gauss_amp){
+      mid_gauss_amp = id_gauss_amp;
+    }
+
+    inline double getid_gauss_amp(){
+      return mid_gauss_amp;
+    }
+
     inline void setid_gauss_center(double id_gauss_center){
       mid_gauss_center = id_gauss_center;
     }
@@ -86,6 +104,8 @@ class MaxwellParameters : public Parameters {
     double mxmax;
     double mtmax;
     double mcfl;
+    int moutput_frequency;
+    double mid_gauss_amp;
     double mid_gauss_center;
     double mid_gauss_width;
     double mKOSigma;

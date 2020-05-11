@@ -5,7 +5,7 @@
 #include <cmath>
 
 // Constructor
-Maxwell::Maxwell(Domain &d, Solver &s) : ODE(2,0) {
+Maxwell::Maxwell(Domain &d, Solver &s) : ODE(2,1) {
 
     if (d.getGhostPoints() < 2) {
         std::cerr << "Warning: domain has fewer ghost points than expected." << std::endl;
@@ -27,8 +27,9 @@ Maxwell::~Maxwell() {
 // Initial data routine
 void Maxwell::initData() {
 
-    double x0 = 0.0;
-    double sigma = 0.25;
+    MaxwellParameters *par = (MaxwellParameters *) params;
+    double x0 = par->getid_gauss_center();
+    double sigma = par->getid_gauss_width();
 
     // Loop over grids
     for (auto it = data.begin(); it != data.end(); ++it) {

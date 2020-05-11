@@ -35,6 +35,7 @@ int main(int argc, char *argv[])
     double cfl = pars.getcfl();
     double tmax = pars.gettmax();
     domain.setCFL(cfl);
+    int output_frequency = pars.getoutput_frequency();
 
     std::cout << "Creating grid with " << N << " points and bounds [" << bounds[0] << ", " << bounds[1] << "]" << std::endl;
 
@@ -46,8 +47,8 @@ int main(int argc, char *argv[])
     Maxwell ode = Maxwell(domain, rk4);
     ode.setInterpolator(&interp);
 
-    ode.initData();
     ode.setParameters(&pars);
+    ode.initData();
 
     double ti = 0.0;
     double dt = domain.getCFL()*(--domain.getGrids().end())->getSpacing();
@@ -62,9 +63,11 @@ int main(int argc, char *argv[])
     for (unsigned int i = 1; i <= M; i++) {
         ode.evolveStep(dt);
         t += dt;
-        std::cout << "Step " << i << " time " << t << std::endl;
-        ode.output_frame(fnames[0], t, 0);
-        ode.output_frame(fnames[1], t, 1);
+        if (i % output_frequency == 0) {
+            std::cout << "Step " << i << " time " << t << std::endl;
+            ode.output_frame(fnames[0], t, 0);
+            ode.output_frame(fnames[1], t, 1);
+        }
     }
 
     delete [] fnames[0];
