@@ -54,8 +54,11 @@ int main(int argc, char *argv[])
     double dt = domain.getCFL()*(--domain.getGrids().end())->getSpacing();
 
     unsigned int M = (tmax - ti) / dt;
-    ode.output_frame(fnames[0], 0.0, 0);
-    ode.output_frame(fnames[1], 0.0, 1);
+//  ode.output_frame(fnames[0], 0.0, 0);
+//  ode.output_frame(fnames[1], 0.0, 1);
+    int it = 0;
+    ode.outputVTKScalar(fnames[0], 0.0, it, 0);
+    ode.outputVTKScalar(fnames[1], 0.0, it, 1);
 
     std::cout << "Beginning evolution with " << M << " steps" << std::endl;
 
@@ -65,8 +68,12 @@ int main(int argc, char *argv[])
         t += dt;
         if (i % output_frequency == 0) {
             std::cout << "Step " << i << " time " << t << std::endl;
-            ode.output_frame(fnames[0], t, 0);
-            ode.output_frame(fnames[1], t, 1);
+//          ode.output_frame(fnames[0], t, 0);
+//          ode.output_frame(fnames[1], t, 1);
+            it++;
+            ode.outputVTKScalar(fnames[0], t, it, 0);
+            ode.outputVTKScalar(fnames[1], t, it, 1);
+          
         }
     }
 

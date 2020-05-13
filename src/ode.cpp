@@ -317,4 +317,16 @@ void ODE::dump_csv(char* name, double t, unsigned int var){
 
   fclose(f);
 }
+
+void ODE::outputVTKScalar(char *name, double t, int iter, unsigned int var){
+
+  unsigned int nb = domain->getGhostPoints();
+
+  for(auto it = data.begin(); it != data.end(); ++it){
+    unsigned int shp = it->getGrid().getSize();
+    const double *points = it->getGrid().getPoints();
+    double **u = it->getData();
+    output::output_vtk(name, u[var] + nb, points + nb, shp - 2*nb, t, iter);
+  }
+}
 // }}}
